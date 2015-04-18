@@ -1,45 +1,58 @@
- 
 $(document).ready(function() {
 
-    // put form data into a new Todo object
+  $('#selectAll').on('click', function() {
+    $('input:checkbox').prop("checked", this.checked);
+  });
+
+  $('#removeButton').on('click', function() {
+    //e.preventDefault();
+    // select every table row in which checkbox is checked
+    // remove those parent table rows from the DOM
+    var checkbox_id = $('input:checked').attr('id');
+
+    // remove item from the database by making AJAX call
     
-    // select the element to insert items into
-    var $listDiv = $('#listDiv');
+    $('input:checked').parent().parent().remove();
 
-    // get values from the input form
-    // var itemDueDate = new Date($('#todoDueDate').val());
-    // var month = itemDueDate.getMonth() + 1;
-    // var day = itemDueDate.getDate() + 1;
-    // var year = itemDueDate.getFullYear();
-    // var $itemTitle = $('#todoTitle');
-    // var $itemDescription = $('#todoDescription');
-    // var $itemPriority = $('#todoPriority');
-    
-    // create the HTML for a new table row
-    // var contentString = "";
-    // contentString += "<tr>";
-    // contentString += "<td>" + "<input type=\"checkbox\">" + "</td>";
-    // contentString += "<td> <span class=\"label label-primary\">" + $itemPriority.val() + "</span> </td>";
-    // contentString += "<td>" + $itemTitle.val() + "</td>";
-    // //contentString += "<td>" + itemDueDate.toLocaleDateString("en-US") + "</td>";
-    // contentString += "<td>" + month + "/" + day + "/" + year + "</td>";
-    // contentString += "</tr>";
+    console.log(checkbox_id);
 
-    var contentString = "";
-    contentString += "<tr>";
-    contentString += "<td>" + "<input type=\"checkbox\">" + "</td>";
-    contentString += "<td> <span class=\"label label-primary\">" + "2" + "</span> </td>";
-    contentString += "<td>" + "My item" + "</td>";
-    //contentString += "<td>" + itemDueDate.toLocaleDateString("en-US") + "</td>";
-    contentString += "<td>" + "2015/04/11" + "</td>";
-    contentString += "</tr>";
-
-    // insert the new to-do item into the list
-    $listDiv.find('tbody').append(contentString);
-
-    // clear Title and Description fields
-    // $itemTitle.val('');
-    // $itemDescription.val('');
+    $.ajax({
+      url: '/todo',
+      method: 'DELETE',
+      data: {
+        todo_id: checkbox_id
+      },
+      success: function(response) {
+        console.log("returned from ajax DELETE");
+      }
+    });
 
   });
+
+
+  $('#editButton').on('click', function() {
+    var checkbox_id = $('input:checked').attr('id');
+
+    window.location.href = '/todo/' + checkbox_id;
+
+    // $.ajax({
+    //   url: '/todo/' + checkbox_id,
+    //   method: 'GET',
+    //   success: function(response) {
+
+    //     console.log("returned from ajax Edit Button");
+    //   }
+    // });    
+  });
+
+
+  $('#addButton').on('click', function(e) {
+    e.preventDefault();
+    // go to index page
+    // $.get("/index.ejs", function(data) {
+    //   window.location = data.redirect;
+    });
+
+  });
+
 
