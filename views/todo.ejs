@@ -32,10 +32,11 @@
 					  		<th>Title</th>
 					  		<th>Description</th>
 					  		<th>Due Date</th>
+					  		<th>Completed?</th>
 					  	</tr>
 					  	<!-- .toLocaleDateString("en-US") -->
 			      <% tasks.forEach(function(task){ %>
-			      	<% var dateString = task.dueDate.toLocaleDateString("en-US"); %>
+			      	<% var dateString = task.dueDate; %>
 			      	
 					  	<tr class="todoItem">
 				  	    <td><input type="checkbox" id="<%= task._id %>"></td>
@@ -43,6 +44,7 @@
 				  	    <td> <%= task.title %> </td>
 				  	    <td> <%= task.description %> </td>
 				  	    <td> <%= dateString %> </td>
+				  	    <td> <%= task.complete %> </td>
 					  	</tr>
 			      <%  }) %>					
 					  </tbody>

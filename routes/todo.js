@@ -14,7 +14,7 @@ db.once('open', function (callback) {
 
 // define your database schema
 var listSchema = mongoose.Schema({
-  dueDate: Date,
+  dueDate: String,
   timeStamp: { 
   	type: Date, 
   	default: Date.now() },
@@ -23,10 +23,7 @@ var listSchema = mongoose.Schema({
   priority: {
     type: Number,
     required: true },
-  complete: {
-    type: Boolean,
-    default: false,
-    required: true }
+  complete: Boolean
 });
 
 var Todo = mongoose.model('Todo', listSchema);
@@ -92,31 +89,61 @@ router.delete('/', function(req, res) {
 // POST form
 router.post('/', function(req, res) {
 
-	new Todo({
-		dueDate: req.body.dueDate,
-		title: req.body.title,
-		description: req.body.description,
-		priority: req.body.priority,
-		complete: false
-	}).save(function (err, item) {
-		if(err) {
-      res.render("error", {
-        error: {
-          status: 500,
-          stack: JSON.stringify(err.errors)
-        },
-        message: "You failed!"
-      })
-			console.log(err);
-		} else {
-      // res.render("todo", {
-      //   greeting: "You made it this far.",
-      //   tasks: tasks
-      // });
-  		console.log(item);
-      res.redirect('todo');
-    }
-  });
+  if (req.body._id) { // item already had an _id, so it needs to be updated
+    
+    Todo.findOne({ _id: req.body._id}, function(err, item) {
+      if (err) {
+        console.log(err);
+      } else {
+        // once it is found, update it
+        item.dueDate = req.body.dueDate;
+        item.title = req.body.title;
+        item.description = req.body.description;
+        item.priority = req.body.priority;
+        // CHECKBOX VALUES sent through a form ARE EITHER 'on' or 'undefined'
+        //item.complete = (req.body.completed == 'on') ? true : false;
+        item.complete = (req.body.completed) ? true : false;
+
+        item.save(function(err, updateItem) {
+          if (err) {
+            console.log(err)
+          } else {
+            res.redirect('todo');
+          }
+        });
+      }
+    });
+  }
+  else {
+    // do initial save
+    new Todo({
+      dueDate: req.body.dueDate,
+      title: req.body.title,
+      description: req.body.description,
+      priority: req.body.priority,
+      complete: (req.body.completed == 'on') ? true : false
+    }).save(function (err, item) {
+      if(err) {
+        res.render("error", {
+          error: {
+            status: 500,
+            stack: JSON.stringify(err.errors)
+          },
+          message: "You failed!"
+        })
+        console.log(err);
+      } else {
+        // res.render("todo", {
+        //   greeting: "You made it this far.",
+        //   tasks: tasks
+        // });
+        console.log(item);
+        res.redirect('todo');
+      }
+    });
+
+  }
+
 });
 
 module.exports = router;

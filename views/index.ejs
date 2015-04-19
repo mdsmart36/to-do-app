@@ -7,6 +7,8 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   
+<!--  dueDateValue = item_props.dueDate.getFullYear() + '-' + (item_props.dueDate.getMonth() + 1) + '-' + item_props.dueDate.getDate() -->
+
   <body>
     <div class="container">
       <h1><%= title %></h1>
@@ -14,35 +16,61 @@
       <div class="row">
           <div class="col-sm-1"></div>
           <div class="col-sm-5">
-              <% dueDateValue = item_props.dueDate.getFullYear() + '-' + (item_props.dueDate.getMonth() + 1) + '-' + item_props.dueDate.getDate() %>
+              
               <form class="form-horizontal" id="todoForm" method="post" action="/todo">
+
+                <input type="hidden" name="_id" value="<%= item_props._id %>">
+                
                 <div class="form-group">
                   <label for="todoDueDate" class="col-sm-2 control-label">Due Date</label>
                   <div class="col-sm-8">
-                    <input type="date" class="form-control" id="todoDueDate" name="dueDate" value="<%= dueDateValue %>"required>
+                    <input type="date" class="form-control" id="todoDueDate" name="dueDate" value="<%=item_props.dueDate %>"required>
                   </div>
                 </div>              
+                
                 <div class="form-group">
                   <label for="todoTitle" class="col-sm-2 control-label">Title</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" id="todoTitle" name="title" value="<%= item_props.title %>" minLength="2" required>
                   </div>
                 </div>
+                
                 <div class="form-group">
                   <label for="todoDescription" class="col-sm-2 control-label">Description</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" id="todoDescription" name="description" value="<%= item_props.description %>">
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label for="todoPriority" class="col-sm-2 control-label">Priority</label>
                   <div class="col-sm-4">
                     <select class="form-control" id="todoPriority" name="priority" value="<%= item_props.priority %>">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
+                      <option <% if (item_props.priority === 1) { %>
+                        selected
+                        <% } %>
+                        >1</option>
+                      <option <% if (item_props.priority === 2) { %>
+                        selected
+                        <% } %>
+                        >2</option>
+                      <option <% if (item_props.priority === 3) { %>
+                        selected
+                        <% } %>
+                        >3</option>
                     </select>
                   </div>
+                </div>
+
+                  <div class="form-group">
+                    <label for="todoCompleted" class="col-sm-2 control-label">Completed?</label>
+                    <div class="col-sm-4">
+                      <input type="checkbox" class="form-control" id="todoCompleted" name="completed"  <% if (item_props.complete) { %> checked <% } %> >
+                    </div>
+                  </div>
+
+<!-- value="<%= item_props.completed %>"-->
+                  
                   <div class="col-sm-2">
                     <input type="submit" class="btn btn-primary" id="saveButton" value="Save to List">
                   </div>
