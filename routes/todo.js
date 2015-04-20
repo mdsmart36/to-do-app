@@ -53,7 +53,8 @@ router.get('/:id', function (req, res) {
 
 // GET todo page
 router.get('/', function(req, res, next) {
-  return Todo.find( function (err, tasks) {
+  // return all matching documents sorted is ascending order by priority
+  return Todo.find().sort('priority').exec(function (err, tasks) {
     if(!err) {
       res.render('todo', {
         greeting: "Your current Tasks",
@@ -65,10 +66,22 @@ router.get('/', function(req, res, next) {
     }
   });
 
+  // return Todo.find( function (err, tasks) {
+  //   if(!err) {
+  //     res.render('todo', {
+  //       greeting: "Your current Tasks",
+  //       tasks: tasks
+  //     });
+  //     // console.log(tasks);
+  //   } else {
+  //     return console.error(err);
+  //   }
+  // });
+
 });
 
 router.delete('/', function(req, res) {
-  console.log(req.body);
+  //console.log(req.body);
   Todo.find({ _id: req.body.todo_id })
       .remove(function (err, item) {
         if(err) {
@@ -81,7 +94,7 @@ router.delete('/', function(req, res) {
           })
           console.log(err);
         } else {
-          console.log("Item has been deleted.");
+          //console.log("Item has been deleted.");
           }
       });
 });
@@ -137,7 +150,7 @@ router.post('/', function(req, res) {
         //   greeting: "You made it this far.",
         //   tasks: tasks
         // });
-        console.log(item);
+        //console.log(item);
         res.redirect('todo');
       }
     });
