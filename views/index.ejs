@@ -7,14 +7,14 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   
-<!--  dueDateValue = item_props.dueDate.getFullYear() + '-' + (item_props.dueDate.getMonth() + 1) + '-' + item_props.dueDate.getDate() -->
-
   <body>
     <div class="container">
       <h1><%= title %></h1>
-
+      
       <div class="row">
-          <div class="col-sm-1"></div>
+          <div class="col-sm-1">
+            
+          </div>
           <div class="col-sm-5">
               
               <form class="form-horizontal" id="todoForm" method="post" action="/todo">
@@ -64,31 +64,25 @@
 
                   <div class="form-group">
                     <label for="todoCompleted" class="col-sm-2 control-label">Completed?</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-2">
                       <input type="checkbox" class="form-control" id="todoCompleted" name="completed"  <% if (item_props.complete) { %> checked <% } %> >
                     </div>
                   </div>
-
-<!-- value="<%= item_props.completed %>"-->
                   
                   <div class="col-sm-2">
                     <input type="submit" class="btn btn-primary" id="saveButton" value="Save to List">
+                    <p></p>
+                    <a href="/todo"><button type="button" class="btn btn-default btn-primary">View your current list</button></a>
                   </div>
+
                 </div>              
               </form>
 
           </div>
 
-          <div class="col-sm-5">
-<!--               <h2 id="">Your current list</h2>
-              
-              <table class="table" id="listDiv">
-                <tbody>
-                </tbody>
-              </table>
- -->
+          <div class="col-sm-1">
+            
           </div>
-          <div class="col-sm-1"></div>
       </div>
     </div>
 

@@ -56,7 +56,7 @@ router.get('/', function(req, res, next) {
   return Todo.find( function (err, tasks) {
     if(!err) {
       res.render('todo', {
-        greeting: "Your current To-Do List",
+        greeting: "Your current Tasks",
         tasks: tasks
       });
       // console.log(tasks);

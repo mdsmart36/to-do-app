@@ -1,9 +1,29 @@
 $(document).ready(function() {
 
+/*
   $('#selectAll').on('click', function() {
     $('input:checkbox').prop("checked", this.checked);
   });
+*/
 
+  $('.remove-btn').on('click', function() {
+    var item_id = $(this)[0].id;
+    $('#todo_' + item_id).remove();
+
+    $.ajax({
+      url: '/todo',
+      method: 'DELETE',
+      data: {
+        todo_id: item_id
+      },
+      success: function(response) {
+        console.log("returned from ajax DELETE");
+      }
+    });
+
+  });
+
+/*
   $('#removeButton').on('click', function() {
 
     // select every table row in which checkbox is checked
@@ -28,15 +48,23 @@ $(document).ready(function() {
 
   });
 
+*/
 
+  $('.edit-btn').on('click', function() {
+    var item_id = $(this)[0].id;
+    window.location.href = '/todo/' + item_id;
+  });
+
+/*
   $('#editButton').on('click', function() {
     var checkbox_id = $('input:checked').attr('id');
     window.location.href = '/todo/' + checkbox_id;
   });
 
+*/
 
-  $('#addButton').on('click', function(e) {
-    //e.preventDefault();
+  $('#addButton').on('click', function() {
+    
     window.location.href = '/';
     });
 
